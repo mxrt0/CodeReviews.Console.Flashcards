@@ -1,7 +1,7 @@
 -- Create Stack Table
 CREATE TABLE Stack (
     Id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-    Name VARCHAR(150) NOT NULL
+    Name VARCHAR(150) UNIQUE NOT NULL
 );
 
 -- Create Flashcard table

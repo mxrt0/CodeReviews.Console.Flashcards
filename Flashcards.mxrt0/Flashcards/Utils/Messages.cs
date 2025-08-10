@@ -82,7 +82,7 @@ public static class Messages
 
     public readonly static string IncorrectAnswerMessage = "\nNot quite. The correct answer is actually '{0}'!\n";
 
-    public readonly static string ConcludeSessionMessage = "\nType 'End' to conclude this study session and return to the Main Menu or type 'Continue' to continue:\n";
+    public readonly static string ConcludeSessionMessage = "\nType 'End' at any time to conclude this study session and return to the Main Menu.\n";
 
     public readonly static string InvalidSessionInputMessage = "\nPlease enter either 'End' or 'Continue':\n";
 

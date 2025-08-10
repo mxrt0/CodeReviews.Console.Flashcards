@@ -255,6 +255,11 @@ public class FlashcardController
 
         var flashcards = _flashcardService.GetFlashcardsInStack(stackToStudy.Id);
 
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine(Messages.ConcludeSessionMessage);
+        Thread.Sleep(600);
+        Console.ResetColor();
+
         foreach (var flashcard in flashcards)
         {
             Console.WriteLine($"\n{flashcard.Front}");
@@ -262,8 +267,11 @@ public class FlashcardController
             Console.Write(Messages.AnswerQuestionPrompt);
 
             string? userAnswer = Console.ReadLine();
-
-            if (flashcard.Back == userAnswer)
+            if (string.Equals(userAnswer, "end", StringComparison.OrdinalIgnoreCase))
+            {
+                break;
+            }
+            if (string.Equals(userAnswer, flashcard.Back, StringComparison.OrdinalIgnoreCase))
             {
                 Console.WriteLine(Messages.CorrectAnswerMessage);
                 currentScore++;
@@ -271,35 +279,6 @@ public class FlashcardController
             else
             {
                 Console.WriteLine(string.Format(Messages.IncorrectAnswerMessage, flashcard.Back));
-            }
-
-            Console.WriteLine(Messages.ConcludeSessionMessage);
-            string? userInput = Console.ReadLine();
-            if (string.Equals(userInput, "end", StringComparison.OrdinalIgnoreCase))
-            {
-                break;
-            }
-            else if (string.Equals(userInput, "continue", StringComparison.OrdinalIgnoreCase))
-            {
-                continue;
-            }
-            else
-            {
-                while (!string.Equals(userInput, "end", StringComparison.OrdinalIgnoreCase)
-                    && !string.Equals(userInput, "continue", StringComparison.OrdinalIgnoreCase))
-                {
-                    Console.WriteLine(Messages.InvalidSessionInputMessage);
-                    userInput = Console.ReadLine();
-                }
-
-                if (string.Equals(userInput, "end", StringComparison.OrdinalIgnoreCase))
-                {
-                    break;
-                }
-                else if (string.Equals(userInput, "continue", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
             }
         }
         Console.WriteLine(string.Format(Messages.SessionConcludedMessage, currentScore, _stackService.GetNumberOfFlashcardsInStack(stackToStudy.Id)));
