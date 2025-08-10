@@ -1,8 +1,7 @@
-﻿namespace Flashcards.Models
+﻿namespace Flashcards.Models;
+
+public class Stack
 {
-    public class Stack
-    {
-        public int Id { get; set; }
-        public required string Name { get; set; } // unique
-    }
+    public int Id { get; set; }
+    public required string Name { get; set; } // unique
 }

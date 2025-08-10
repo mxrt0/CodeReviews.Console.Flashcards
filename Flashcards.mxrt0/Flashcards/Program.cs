@@ -2,17 +2,16 @@
 using Flashcards.Services;
 using Flashcards.Services.Contracts;
 
-namespace Flashcards
+namespace Flashcards;
+
+public class Program
 {
-    public class Program
+    static void Main(string[] args)
     {
-        public static string connectionString = "Data Source=localhost;Initial Catalog=PracticeDB;Integrated Security=True;Encrypt=False;Trust Server Certificate=True";
-        static void Main(string[] args)
-        {
-            IStackService stackService = new StackService();
-            IFlashcardService flashcardService = new FlashcardService();
-            IStudySessionService studySessionService = new StudySessionService();
-            var controller = new FlashcardController(flashcardService, stackService, studySessionService);
-        }
+        IStackService stackService = new StackService();
+        IFlashcardService flashcardService = new FlashcardService();
+        IStudySessionService studySessionService = new StudySessionService();
+        var controller = new FlashcardController(flashcardService, stackService, studySessionService);
     }
 }
+

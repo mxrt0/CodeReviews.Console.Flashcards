@@ -5,34 +5,34 @@ using Flashcards.Services.Contracts;
 using Flashcards.Utils;
 using Microsoft.Data.SqlClient;
 
-namespace Flashcards.Services
-{
-    public class StudySessionService : IStudySessionService
-    {
-        public void AddStudySession(DateTime date, int score, int stackId)
-        {
-            using var connection = new SqlConnection(DBHelper.ConnectionString);
-            connection.Open();
-            var addCommand = @"INSERT INTO StudySession(SessionDate, Score, StackId) VALUES(@Date, @Score, @StackId)";
-            connection.Execute(addCommand, new { Date = date, Score = score, StackId = stackId });
-        }
+namespace Flashcards.Services;
 
-        public List<StudySession> GetAllStudySessions()
-        {
-            using var connection = new SqlConnection(DBHelper.ConnectionString);
-            connection.Open();
-            var getAllQuery = @"SELECT 
+public class StudySessionService : IStudySessionService
+{
+    public void AddStudySession(DateTime date, int score, int stackId)
+    {
+        using var connection = new SqlConnection(DBHelper.ConnectionString);
+        connection.Open();
+        var addCommand = @"INSERT INTO StudySession(SessionDate, Score, StackId) VALUES(@Date, @Score, @StackId)";
+        connection.Execute(addCommand, new { Date = date, Score = score, StackId = stackId });
+    }
+
+    public List<StudySession> GetAllStudySessions()
+    {
+        using var connection = new SqlConnection(DBHelper.ConnectionString);
+        connection.Open();
+        var getAllQuery = @"SELECT 
                               ROW_NUMBER() OVER (ORDER BY Id) AS SessionId,
                               SessionDate,
                               Score FROM StudySession";
-            return connection.Query<StudySession>(getAllQuery).ToList();
-        }
+        return connection.Query<StudySession>(getAllQuery).ToList();
+    }
 
-        public List<MonthlySessionReport> GetMonthlySessionsCountReportByYear(int year)
-        {
-            using var connection = new SqlConnection(DBHelper.ConnectionString);
-            connection.Open();
-            var reportQuery = @"SELECT 
+    public List<MonthlySessionReport> GetMonthlySessionsCountReportByYear(int year)
+    {
+        using var connection = new SqlConnection(DBHelper.ConnectionString);
+        connection.Open();
+        var reportQuery = @"SELECT 
 	                                StackName,
 	                                ISNULL([1], 0) AS January,
 	                                ISNULL([2], 0) AS February,
@@ -60,13 +60,13 @@ namespace Flashcards.Services
 		                                FOR StudyMonth IN ([1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12])
                                 ) AS SessionsByMonth
                                 ORDER BY StackName;";
-            return connection.Query<MonthlySessionReport>(reportQuery, new { Year = year }).ToList();
-        }
-        public List<MonthlyAverageScoreReport> GetMonthlyAverageScoreByYear(int year)
-        {
-            using var connection = new SqlConnection(DBHelper.ConnectionString);
-            connection.Open();
-            var reportQuery = @"
+        return connection.Query<MonthlySessionReport>(reportQuery, new { Year = year }).ToList();
+    }
+    public List<MonthlyAverageScoreReport> GetMonthlyAverageScoreByYear(int year)
+    {
+        using var connection = new SqlConnection(DBHelper.ConnectionString);
+        connection.Open();
+        var reportQuery = @"
                                SELECT 
                                 StackName,
                                 ISNULL(ROUND([1], 2), 0) AS January,
@@ -97,7 +97,6 @@ namespace Flashcards.Services
                             ) AS PivotTable
                             ORDER BY StackName;";
 
-            return connection.Query<MonthlyAverageScoreReport>(reportQuery, new { Year = year }).ToList();
-        }
+        return connection.Query<MonthlyAverageScoreReport>(reportQuery, new { Year = year }).ToList();
     }
 }

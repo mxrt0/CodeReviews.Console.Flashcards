@@ -1,13 +1,12 @@
 ﻿using Flashcards.DTOs;
 using Flashcards.Models;
 
-namespace Flashcards.Services.Contracts
+namespace Flashcards.Services.Contracts;
+
+public interface IStudySessionService
 {
-    public interface IStudySessionService
-    {
-        void AddStudySession(DateTime date, int score, int stackId);
-        List<StudySession> GetAllStudySessions();
-        List<MonthlySessionReport> GetMonthlySessionsCountReportByYear(int year);
-        List<MonthlyAverageScoreReport> GetMonthlyAverageScoreByYear(int year);
-    }
+    void AddStudySession(DateTime date, int score, int stackId);
+    List<StudySession> GetAllStudySessions();
+    List<MonthlySessionReport> GetMonthlySessionsCountReportByYear(int year);
+    List<MonthlyAverageScoreReport> GetMonthlyAverageScoreByYear(int year);
 }
